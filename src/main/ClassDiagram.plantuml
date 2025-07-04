@@ -1,0 +1,108 @@
+@startuml
+' Set style
+skinparam classAttributeIconSize 0
+
+' Interfaces
+interface ShippableItem {
+    +String getName()
+    +double getWeight()
+}
+
+interface Expirable {
+    +boolean isExpired()
+}
+
+' Abstract Product
+abstract class Product {
+    -String name
+    -double price
+    -int quantity
+
+    +getName(): String
+    +getPrice(): double
+    +getQuantity(): int
+    +isExpired(): boolean
+    +isShippable(): boolean
+}
+
+' Concrete Product Classes
+class Cheese extends Product implements Expirable, ShippableItem {
+    -double weight
+    -boolean expired
+}
+
+class Biscuits extends Product implements Expirable, ShippableItem {
+    -double weight
+    -boolean expired
+}
+
+class TV extends Product implements ShippableItem {
+    -double weight
+}
+
+class ScratchCard extends Product {
+    ' no extra attributes
+}
+
+' Cart Item
+class CartItem {
+    -Product product
+    -int quantity
+}
+
+' Cart
+class Cart {
+    -List<CartItem> items
+
+    +add(Product, int)
+    +getSubtotal(): double
+    +getShippingCost(): double
+    +getTotal(): double
+    +getShippableItems(): List<ShippableItem>
+    +isEmpty(): boolean
+}
+
+' Customer
+class Customer {
+    -String name
+    -double balance
+
+    +canAfford(double): boolean
+    +deduct(double)
+    +getBalance(): double
+}
+
+' Services
+class CheckoutService {
+    +checkout(Customer, Cart)
+}
+
+class ShippingService {
+    +ship(List<ShippableItem>)
+}
+
+' Exceptions
+class EmptyCartException
+class ExpiredProductException
+class ProductOutOfStockException
+class InsufficientBalanceException
+
+' Relationships
+Product <|-- Cheese
+Product <|-- Biscuits
+Product <|-- TV
+Product <|-- ScratchCard
+
+Product ..|> ShippableItem : <<optional>>
+Product ..|> Expirable : <<optional>>
+
+Cart --> CartItem
+CartItem --> Product
+
+CheckoutService --> Customer
+CheckoutService --> Cart
+CheckoutService --> ShippingService
+
+ShippingService --> ShippableItem
+
+@enduml
