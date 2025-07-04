@@ -1,9 +1,7 @@
 @startuml
-' Set style
 skinparam classAttributeIconSize 0
 
-' Interfaces
-interface ShippableItem {
+interface Shippable {
     +String getName()
     +double getWeight()
 }
@@ -12,7 +10,6 @@ interface Expirable {
     +boolean isExpired()
 }
 
-' Abstract Product
 abstract class Product {
     -String name
     -double price
@@ -25,32 +22,30 @@ abstract class Product {
     +isShippable(): boolean
 }
 
-' Concrete Product Classes
-class Cheese extends Product implements Expirable, ShippableItem {
+class Cheese extends Product implements Expirable, Shippable {
     -double weight
-    -boolean expired
-}
+    -boolean expirable
+    }
 
-class Biscuits extends Product implements Expirable, ShippableItem {
-    -double weight
-    -boolean expired
-}
 
-class TV extends Product implements ShippableItem {
+
+class TV extends Product implements Shippable {
     -double weight
 }
 
 class ScratchCard extends Product {
-    ' no extra attributes
-}
 
-' Cart Item
+}
+class Biscuits extends Product implements Expirable, Shippable {
+    -double weight
+    -boolean expirable
+    }
+
 class CartItem {
     -Product product
     -int quantity
 }
 
-' Cart
 class Cart {
     -List<CartItem> items
 
@@ -58,11 +53,10 @@ class Cart {
     +getSubtotal(): double
     +getShippingCost(): double
     +getTotal(): double
-    +getShippableItems(): List<ShippableItem>
+    +getShippableItems(): List<Shippable>
     +isEmpty(): boolean
 }
 
-' Customer
 class Customer {
     -String name
     -double balance
@@ -72,28 +66,21 @@ class Customer {
     +getBalance(): double
 }
 
-' Services
 class CheckoutService {
     +checkout(Customer, Cart)
 }
 
 class ShippingService {
-    +ship(List<ShippableItem>)
+    +ship(List<Shippable>)
 }
 
-' Exceptions
-class EmptyCartException
-class ExpiredProductException
-class ProductOutOfStockException
-class InsufficientBalanceException
 
-' Relationships
 Product <|-- Cheese
 Product <|-- Biscuits
 Product <|-- TV
 Product <|-- ScratchCard
 
-Product ..|> ShippableItem : <<optional>>
+Product ..|> Shippable : <<optional>>
 Product ..|> Expirable : <<optional>>
 
 Cart --> CartItem
@@ -103,6 +90,6 @@ CheckoutService --> Customer
 CheckoutService --> Cart
 CheckoutService --> ShippingService
 
-ShippingService --> ShippableItem
+ShippingService --> Shippable
 
 @enduml
