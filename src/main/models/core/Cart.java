@@ -18,10 +18,10 @@ public class Cart {
     public void addItem(Product product, int quantity)
             throws IllegalArgumentException, InsufficientStockException, ExpiredProductException {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be greater than 0");
+            throw new IllegalArgumentException("Quantity of " + product.getName() + " must be greater than 0");
         }
         if (quantity > product.getQuantity()) {
-            throw new InsufficientStockException("Quantity exceeds available stock");
+            throw new InsufficientStockException("Quantity of " + product.getName() + " exceeds available stock");
         }
         if (product instanceof Expirable) {
             if (((Expirable) product).isExpired()) {
@@ -36,15 +36,14 @@ public class Cart {
     }
 
     public double getShippingCost() {
-//        double totalWeight = 0;
-//        for (CartItem item : items) {
-//            if (item.getProduct() instanceof Shippable) {
-//                double weight = ((Shippable)item.getProduct()).getWeight();
-//                totalWeight += weight * item.getQuantity();
-//            }
-//        }
-//        return totalWeight * 100; // assuming a shipping cost of 100 EGP/KG
-        return 30; // assuming fixed shipping cost according to provided test output
+        double totalWeight = 0;
+        for (CartItem item : items) {
+            if (item.getProduct() instanceof Shippable) {
+                double weight = ((Shippable)item.getProduct()).getWeight();
+                totalWeight += weight * item.getQuantity();
+            }
+        }
+        return totalWeight * 50; // assuming a shipping cost of 50 EGP/KG
     }
 
     public double getSubTotal() {

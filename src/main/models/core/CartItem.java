@@ -8,10 +8,10 @@ public class CartItem {
 
     public CartItem(Product product, int quantity) {
         if (quantity <= 0){
-            throw new IllegalArgumentException("Quantity cannot be negative.");
+            throw new IllegalArgumentException("Quantity of" + product.getName() + " cannot be negative.");
         }
         if(quantity > product.getQuantity()){
-            throw new InsufficientStockException("Quantity exceeded stock limit.");
+            throw new InsufficientStockException("Quantity of " + product.getName() + " exceeded stock limit.");
         }
         this.product = product;
         this.quantity = quantity;

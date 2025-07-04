@@ -18,7 +18,7 @@ public class ShippingService {
                 notice.append(item.getQuantity())
                         .append("x ")
                         .append(item.getProduct().getName())
-                        .append(" ")
+                        .append(" : ")
                         .append(String.format("%.2f", itemWeight))
                         .append(" kg\n");
             }

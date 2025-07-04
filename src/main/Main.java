@@ -19,7 +19,7 @@ public class Main {
             cart.addItem(cheese, 2);
             cart.addItem(biscuit, 1);
             cart.addItem(scratchCard, 1);
-            cart.addItem(tv, 1);
+//            cart.addItem(tv, 1);
 
             CheckoutService checkout = new CheckoutService(new ShippingService());
             checkout.checkout(cart, customer);

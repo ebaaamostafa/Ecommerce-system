@@ -37,7 +37,7 @@ public class CheckoutService {
             }
 
             if (product instanceof Expirable && ((Expirable) product).isExpired()) {
-                throw new ExpiredProductException("Product expired: " + product.getName());
+                throw new ExpiredProductException("Product " + product.getName() + " is expired.");
             }
 
             product.consumeStock(item.getQuantity());
@@ -52,8 +52,8 @@ public class CheckoutService {
             System.out.println(item);
         }
         System.out.println("----------------------");
-        System.out.println("Subtotal: " + cart.getSubTotal());
-        System.out.println("Shipping: " + cart.getShippingCost());
-        System.out.println("Amount: " + totalCost);
+        System.out.println("Subtotal: " + String.format("%.2f", cart.getSubTotal()));
+        System.out.println("Shipping: " + String.format("%.2f", cart.getShippingCost()));
+        System.out.println("Amount: " + String.format("%.2f", totalCost));
     }
 }
