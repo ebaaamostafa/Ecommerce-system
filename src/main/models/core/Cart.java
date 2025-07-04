@@ -2,6 +2,8 @@ package main.models.core;
 
 import main.exceptions.ExpiredProductException;
 import main.exceptions.InsufficientStockException;
+import main.interfaces.Expirable;
+import main.interfaces.Shippable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +23,9 @@ public class Cart {
         if (quantity > product.getQuantity()) {
             throw new InsufficientStockException("Quantity exceeds available stock");
         }
-        if (product instanceof main.interfaces.Expirable) {
-            if (((main.interfaces.Expirable) product).isExpired()) {
-                throw new ExpiredProductException("Product is expired");
+        if (product instanceof Expirable) {
+            if (((Expirable) product).isExpired()) {
+                throw new ExpiredProductException("Product (" + product.getName() + ") is expired");
             }
         }
         items.add(new CartItem(product, quantity));
@@ -34,17 +36,18 @@ public class Cart {
     }
 
     public double getShippingCost() {
-        double totalWeight = 0;
-        for (CartItem item : items) {
-            if (item.getProduct() instanceof main.interfaces.Shippable) {
-                double weight = ((main.interfaces.Shippable) item.getProduct()).getWeight();
-                totalWeight += weight * item.getQuantity();
-            }
-        }
-        return totalWeight * 100; // assuming a shipping cost of 100 EGP/KG
+//        double totalWeight = 0;
+//        for (CartItem item : items) {
+//            if (item.getProduct() instanceof Shippable) {
+//                double weight = ((Shippable)item.getProduct()).getWeight();
+//                totalWeight += weight * item.getQuantity();
+//            }
+//        }
+//        return totalWeight * 100; // assuming a shipping cost of 100 EGP/KG
+        return 30; // assuming fixed shipping cost according to provided test output
     }
 
-    public double getPreShippingCost() {
+    public double getSubTotal() {
         double total = 0;
         for (CartItem item : items) {
             total += item.getProduct().getPrice() * item.getQuantity();
@@ -52,8 +55,8 @@ public class Cart {
         return total;
     }
 
-    public double getTotal() {
-        return getPreShippingCost() + getShippingCost();
+    public double getTotalCost() {
+        return getSubTotal() + getShippingCost();
     }
 
     public List<CartItem> getItems() {

@@ -24,13 +24,13 @@ public class CartItem {
         return quantity;
     }
 
-    public double getTotal(){
+    public double getTotalCost(){
         return product.getPrice() * quantity;
     }
 
     @Override
     public String toString() {
-        return quantity + "x " + product.toString() + " : " + getTotal() + " EGP";
+        return quantity + "x " + product.getName() + " : " + getTotalCost() + " EGP";
     }
 }
 
